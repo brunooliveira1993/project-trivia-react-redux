@@ -11,7 +11,6 @@ class Header extends Component {
   componentDidMount() {
     const { email } = this.props;
     const teste = md5(email).toString();
-    console.log(teste);
     this.setState({
       gravatarImgUrl: `https://www.gravatar.com/avatar/${teste}`,
     });

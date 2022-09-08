@@ -1,6 +1,5 @@
 import { USER_LOGIN, API_FAIL, API_REQUEST } from '../actions';
 
-
 const INITIAL_STATE = {
   name: '',
   assertions: 0,

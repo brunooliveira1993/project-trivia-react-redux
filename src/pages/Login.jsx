@@ -21,12 +21,12 @@ class Login extends Component {
     });
   };
 
-  handleClick = () => {
-    const { dispatch, history } = this.props;
-    const { email, name } = this.state;
-    dispatch(getLoginData({ email, name }));
-    history.push('/game');
-  };
+  // handleClick = () => {
+  //   const { dispatch, history } = this.props;
+  //   const { email, name } = this.state;
+  //   dispatch(getLoginData({ email, name }));
+  //   history.push('/game');
+  // };
 
   validateEmail = (email) => {
     const regex = /[a-z0-9]+@[a-z]+\.[a-z]/;
@@ -94,7 +94,6 @@ class Login extends Component {
     );
   }
 }
-
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,

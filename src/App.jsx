@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Game from './pages/Game';
 import './App.css';
 import Settings from './pages/Settings';
-import Game from './pages/Game';
 
 export default function App() {
   return (
