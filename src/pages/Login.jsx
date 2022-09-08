@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { getQuestionsFromApi, getTriviaApi } from '../store/actions';
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     email: '',
     name: '',
@@ -27,6 +31,14 @@ export default class Login extends Component {
   validateButton = () => {
     const { email, name } = this.state;
     return this.validateEmail(email) && this.validateName(name);
+  };
+
+  handleClick = async () => {
+    const token = await getTriviaApi();
+    const { dispatch, history } = this.props;
+    dispatch(getQuestionsFromApi(this.state));
+    localStorage.setItem('token', token);
+    history.push('/game');
   };
 
   render() {
@@ -59,10 +71,33 @@ export default class Login extends Component {
           type="button"
           disabled={ disabledButton }
           data-testid="btn-play"
+          onClick={ this.handleClick }
         >
           Play
         </button>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Settings
+          </button>
+        </Link>
       </div>
     );
   }
 }
+
+// const mapStateToProps = (state) => ({
+//   loading: state.loading,
+// });
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  // loading: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default connect()(Login);
