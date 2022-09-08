@@ -1,6 +1,5 @@
 import { USER_LOGIN, API_FAIL, API_REQUEST } from '../actions';
 
-
 const INITIAL_STATE = {
   name: '',
   assertions: 0,
@@ -14,7 +13,6 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     ...state,
     name: action.payload.name,
     gravatarEmail: action.payload.email,
-    token: action.trivia,
   };
   case API_REQUEST: return {
     ...state,

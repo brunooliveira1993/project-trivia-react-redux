@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getQuestionsFromApi, getTriviaApi } from '../store/actions';
+import { sendEmailInfo, getTriviaApi } from '../store/actions';
 
 class Login extends Component {
   state = {
@@ -21,12 +21,12 @@ class Login extends Component {
     });
   };
 
-  handleClick = () => {
-    const { dispatch, history } = this.props;
-    const { email, name } = this.state;
-    dispatch(getLoginData({ email, name }));
-    history.push('/game');
-  };
+  // handleClick = () => {
+  //   const { dispatch, history } = this.props;
+  //   const { email, name } = this.state;
+  //   dispatch(getLoginData({ email, name }));
+  //   history.push('/game');
+  // };
 
   validateEmail = (email) => {
     const regex = /[a-z0-9]+@[a-z]+\.[a-z]/;
@@ -43,7 +43,8 @@ class Login extends Component {
   handleClick = async () => {
     const token = await getTriviaApi();
     const { dispatch, history } = this.props;
-    dispatch(getQuestionsFromApi(this.state));
+    const { email, name } = this.state;
+    dispatch(sendEmailInfo({ email, name }));
     localStorage.setItem('token', token);
     history.push('/game');
   };
@@ -94,7 +95,6 @@ class Login extends Component {
     );
   }
 }
-
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,

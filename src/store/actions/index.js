@@ -8,27 +8,26 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const API_REQUEST = 'API_REQUEST';
 export const API_FAIL = 'API_FAIL';
 
-export const sendEmailInfo = (payload, trivia) => ({
+export const sendEmailInfo = (payload) => ({
   type: USER_LOGIN,
   payload,
-  trivia,
 });
 
-const receiveApiFail = (erro) => ({
-  type: API_FAIL,
-  erro,
-});
+// const receiveApiFail = (erro) => ({
+//   type: API_FAIL,
+//   erro,
+// });
 
-const apiRequestInfo = () => ({
-  type: API_REQUEST,
-});
+// const apiRequestInfo = () => ({
+//   type: API_REQUEST,
+// });
 
-export const getQuestionsFromApi = (payload) => async (dispatch) => {
-  dispatch(apiRequestInfo());
-  try {
-    const response = await getTriviaApi();
-    dispatch(sendEmailInfo(payload, response));
-  } catch (error) {
-    dispatch(receiveApiFail(error));
-  }
-};
+// export const getQuestionsFromApi = (payload) => async (dispatch) => {
+//   dispatch(apiRequestInfo());
+//   try {
+//     const response = await getTriviaApi();
+//     dispatch(sendEmailInfo(payload, response));
+//   } catch (error) {
+//     dispatch(receiveApiFail(error));
+//   }
+// };
