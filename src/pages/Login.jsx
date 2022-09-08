@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getLoginData } from '../store/actions';
+import { Link } from 'react-router-dom';
+import { getQuestionsFromApi, getTriviaApi } from '../store/actions';
 
 class Login extends Component {
   state = {
@@ -39,6 +40,14 @@ class Login extends Component {
     return this.validateEmail(email) && this.validateName(name);
   };
 
+  handleClick = async () => {
+    const token = await getTriviaApi();
+    const { dispatch, history } = this.props;
+    dispatch(getQuestionsFromApi(this.state));
+    localStorage.setItem('token', token);
+    history.push('/game');
+  };
+
   render() {
     const { email, name, disabledButton } = this.state;
     return (
@@ -73,10 +82,19 @@ class Login extends Component {
         >
           Play
         </button>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Settings
+          </button>
+        </Link>
       </div>
     );
   }
 }
+
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,

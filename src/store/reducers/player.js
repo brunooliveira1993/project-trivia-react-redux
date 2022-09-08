@@ -1,4 +1,5 @@
-import { GET_LOGIN_DATA } from '../actions';
+import { USER_LOGIN, API_FAIL, API_REQUEST } from '../actions';
+
 
 const INITIAL_STATE = {
   name: '',
@@ -9,12 +10,19 @@ const INITIAL_STATE = {
 
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case GET_LOGIN_DATA:
-    return {
-      ...state,
-      name: action.payload.name,
-      gravatarEmail: action.payload.email,
-    };
+  case USER_LOGIN: return {
+    ...state,
+    name: action.payload.name,
+    gravatarEmail: action.payload.email,
+    token: action.trivia,
+  };
+  case API_REQUEST: return {
+    ...state,
+    loading: true,
+  };
+  case API_FAIL: return {
+    ...state,
+  };
   default:
     return state;
   }
