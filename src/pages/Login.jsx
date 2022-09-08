@@ -20,6 +20,13 @@ class Login extends Component {
     });
   };
 
+  handleClick = () => {
+    const { dispatch, history } = this.props;
+    const { email, name } = this.state;
+    dispatch(getLoginData({ email, name }));
+    history.push('/game');
+  };
+
   validateEmail = (email) => {
     const regex = /[a-z0-9]+@[a-z]+\.[a-z]/;
     return regex.test(email);
@@ -34,7 +41,6 @@ class Login extends Component {
 
   render() {
     const { email, name, disabledButton } = this.state;
-    const { dispatch } = this.props;
     return (
       <div>
         <label htmlFor="email">
@@ -63,7 +69,7 @@ class Login extends Component {
           type="button"
           disabled={ disabledButton }
           data-testid="btn-play"
-          onClick={ () => dispatch(getLoginData({ email, name })) }
+          onClick={ this.handleClick }
         >
           Play
         </button>
@@ -74,6 +80,9 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect()(Login);
