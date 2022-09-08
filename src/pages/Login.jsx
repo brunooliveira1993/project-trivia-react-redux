@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getLoginData } from '../store/actions';
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     email: '',
     name: '',
@@ -31,6 +34,7 @@ export default class Login extends Component {
 
   render() {
     const { email, name, disabledButton } = this.state;
+    const { dispatch } = this.props;
     return (
       <div>
         <label htmlFor="email">
@@ -59,6 +63,7 @@ export default class Login extends Component {
           type="button"
           disabled={ disabledButton }
           data-testid="btn-play"
+          onClick={ () => dispatch(getLoginData({ email, name })) }
         >
           Play
         </button>
@@ -66,3 +71,9 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(Login);
