@@ -21,6 +21,13 @@ class Login extends Component {
     });
   };
 
+  handleClick = () => {
+    const { dispatch, history } = this.props;
+    const { email, name } = this.state;
+    dispatch(getLoginData({ email, name }));
+    history.push('/game');
+  };
+
   validateEmail = (email) => {
     const regex = /[a-z0-9]+@[a-z]+\.[a-z]/;
     return regex.test(email);
@@ -88,13 +95,9 @@ class Login extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   loading: state.loading,
-// });
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  // loading: PropTypes.bool.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
