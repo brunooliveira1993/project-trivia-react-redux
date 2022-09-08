@@ -13,8 +13,5 @@ export default function App() {
       <Route path="/settings" component={ Settings } />
       <Route path="/game" component={ Game } />
     </Switch>
-    // <div className="App">
-    //   <Login />
-    // </div>
   );
 }

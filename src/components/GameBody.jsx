@@ -9,6 +9,9 @@ class GameBody extends Component {
     token: {},
     questions: {},
     questionNumber: 0,
+    correct: '',
+    wrong: '',
+    isAnswered: false,
   };
 
   componentDidMount() {
@@ -21,12 +24,10 @@ class GameBody extends Component {
       const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
       const response = await fetch(url);
       const data = await response.json();
-
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
         localStorage.clear();
         history.push('/');
       }
-
       this.setState({
         questions: data,
       });
@@ -47,8 +48,16 @@ class GameBody extends Component {
     return arr;
   };
 
+  onAnswerClick = () => {
+    this.setState({
+      isAnswered: true,
+      correct: 'correct-answer',
+      wrong: 'wrong-answer',
+    });
+  };
+
   render() {
-    const { questions, questionNumber } = this.state;
+    const { questions, questionNumber, isAnswered, correct, wrong } = this.state;
     const { results } = questions;
     const current = results ? results[questionNumber] : null;
     let answers = [];
@@ -70,10 +79,13 @@ class GameBody extends Component {
                 if (answer !== current.correct_answer) wrongNum += 1;
                 return (
                   <button
+                    className={ isAnswered && answer === current.correct_answer
+                      ? correct : wrong }
                     data-testid={ answer === current.correct_answer
                       ? 'correct-answer' : `wrong-answer-${wrongNum - 1}` }
                     key={ index }
                     type="button"
+                    onClick={ () => this.onAnswerClick(answer) }
                   >
                     {answer}
                   </button>
