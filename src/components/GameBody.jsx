@@ -13,11 +13,11 @@ class GameBody extends Component {
 
   componentDidMount() {
     this.setState({
-      // token: JSON.parse(localStorage.getItem('token')),
+      token: localStorage.getItem('token'),
     }, async () => {
-      // const { token } = this.state;
+      const { token } = this.state;
       const { history } = this.props;
-      const token = '5bae1b29a8b8ca437fc1871b3d9862a15ce408c3d547cd95354d9a66fcc6ce22';
+      // const token = '5bae1b29a8b8ca437fc1871b3d9862a15ce408c3d547cd95354d9a66fcc6ce22';
       const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -57,8 +57,7 @@ class GameBody extends Component {
       answers = [current.correct_answer, ...current.incorrect_answers];
       shuffled = this.randomArrayShuffle(answers);
     }
-    console.log(answers);
-    console.log(shuffled);
+    let wrongNum = 0;
 
     return (
       <div>
@@ -67,16 +66,19 @@ class GameBody extends Component {
             <h3 data-testid="question-category">{current.category}</h3>
             <h4 data-testid="question-text">{current.question}</h4>
             <div data-testid="answer-options">
-              {shuffled.map((answer, index) => (
-                <button
-                  data-testid={ answer === current.correct_answer
-                    ? 'correct-answer' : `wrong-answer-${index - 1}` }
-                  key={ index }
-                  type="button"
-                >
-                  {answer}
-                </button>
-              ))}
+              {shuffled.map((answer, index) => {
+                if (answer !== current.correct_answer) wrongNum += 1;
+                return (
+                  <button
+                    data-testid={ answer === current.correct_answer
+                      ? 'correct-answer' : `wrong-answer-${wrongNum - 1}` }
+                    key={ index }
+                    type="button"
+                  >
+                    {answer}
+                  </button>
+                );
+              })}
 
             </div>
           </div>

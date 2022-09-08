@@ -10,9 +10,9 @@ class Header extends Component {
 
   componentDidMount() {
     const { email } = this.props;
-    const teste = md5(email).toString();
+    const hash = md5(email).toString();
     this.setState({
-      gravatarImgUrl: `https://www.gravatar.com/avatar/${teste}`,
+      gravatarImgUrl: `https://www.gravatar.com/avatar/${hash}`,
     });
   }
 
