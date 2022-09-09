@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import { resetReduxAction } from '../store/actions';
 
 const SCORE_NUMBER = 3;
 
 class Feedback extends Component {
   playAgain = () => {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
+    dispatch(resetReduxAction());
     history.push('/');
   };
 
@@ -47,12 +49,14 @@ class Feedback extends Component {
     );
   }
 }
+
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
