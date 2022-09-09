@@ -38,8 +38,9 @@ class GameBody extends Component {
       const { history } = this.props;
       const data = await getQuestionsAPI(token);
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
-        localStorage.clear();
+        localStorage.removeItem('token');
         history.push('/');
+        return null;
       }
       this.setState({
         questions: data,

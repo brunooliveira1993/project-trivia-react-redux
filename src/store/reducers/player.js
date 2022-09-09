@@ -23,7 +23,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   };
   case CORRECT_ANSWER: return {
     ...state,
-    assertions: state.score + 1,
+    assertions: state.assertions + 1,
     score: state.score + action.score,
   };
   default:
