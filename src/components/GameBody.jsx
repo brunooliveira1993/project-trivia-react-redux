@@ -121,6 +121,7 @@ class GameBody extends Component {
       wrong: '',
       questionAnswered: false,
       timer: FULL_TIMER,
+      isNextVisible: false,
     }), () => {
       this.randomizeAnswers();
       this.intervalTimer();
@@ -135,6 +136,8 @@ class GameBody extends Component {
     const current = results ? results[questionNumber] : null;
 
     let wrongNum = 0;
+
+    const showNextBtn = isNextVisible || timer === 0;
 
     return (
       <div>
@@ -163,7 +166,7 @@ class GameBody extends Component {
 
             </div>
             <h2>{timer}</h2>
-            { isNextVisible && (
+            { showNextBtn && (
               <button
                 data-testid="btn-next"
                 type="button"
