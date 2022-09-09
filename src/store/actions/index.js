@@ -7,10 +7,15 @@ export const getTriviaApi = async () => {
 export const USER_LOGIN = 'USER_LOGIN';
 export const API_REQUEST = 'API_REQUEST';
 export const API_FAIL = 'API_FAIL';
+export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 
 export const sendEmailInfo = (payload) => ({
   type: USER_LOGIN,
   payload,
+});
+
+export const correctAnswerAction = () => ({
+  type: CORRECT_ANSWER,
 });
 
 // const receiveApiFail = (erro) => ({
