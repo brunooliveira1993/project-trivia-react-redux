@@ -8,12 +8,19 @@ const ERROR_TOKEN_RESPONSE = 3;
 const FULL_TIMER = 30;
 const ONE_SECOND = 1000;
 const LAST_QUESTION_NUMBER = 4;
+const BASE_POINT = 10;
+const DIFFICULT_VALUES = {
+  hard: 3,
+  medium: 2,
+  easy: 1,
+};
 
 class GameBody extends Component {
   state = {
     token: {},
     questions: {},
     questionNumber: 0,
+    questionDifficulty: '',
     correct: '',
     wrong: '',
     isAnswered: false,
@@ -36,6 +43,7 @@ class GameBody extends Component {
       }
       this.setState({
         questions: data,
+        questionDifficulty: data.results[0].difficulty,
       });
       this.randomizeAnswers();
     });
@@ -96,9 +104,10 @@ class GameBody extends Component {
       wrong: 'wrong-answer',
       isNextVisible: true,
     }, () => {
-      const { questionAnswered } = this.state;
+      const { questionAnswered, timer, questionDifficulty } = this.state;
+      const score = BASE_POINT + (timer * DIFFICULT_VALUES[questionDifficulty]);
       if (current.correct_answer === answer && !questionAnswered) {
-        dispatch(correctAnswerAction());
+        dispatch(correctAnswerAction(score));
       }
       this.setState({ questionAnswered: true });
       clearInterval(this.intervalID);
@@ -119,12 +128,16 @@ class GameBody extends Component {
     }), () => {
       this.randomizeAnswers();
       this.intervalTimer();
+      const { questions } = this.state;
+      this.setState({
+        questionDifficulty: questions.results[questionNumber + 1].difficulty,
+      });
     });
   };
 
   render() {
     const { questions, questionNumber, isNextVisible,
-      isAnswered, correct, wrong, timer, shuffled } = this.state;
+      isAnswered, correct, wrong, timer, shuffled, questionDifficulty } = this.state;
 
     const { results } = questions;
     const current = results ? results[questionNumber] : null;
@@ -137,6 +150,7 @@ class GameBody extends Component {
       <div>
         { results && (
           <div>
+            <h1>{ questionDifficulty }</h1>
             <h3 data-testid="question-category">{current.category}</h3>
             <h4 data-testid="question-text">{current.question}</h4>
             <div data-testid="answer-options">

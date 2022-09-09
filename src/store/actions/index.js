@@ -14,8 +14,9 @@ export const sendEmailInfo = (payload) => ({
   payload,
 });
 
-export const correctAnswerAction = () => ({
+export const correctAnswerAction = (score) => ({
   type: CORRECT_ANSWER,
+  score,
 });
 
 // const receiveApiFail = (erro) => ({
