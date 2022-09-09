@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { readingRank } from '../services/helpers';
+import { resetReduxAction } from '../store/actions';
 
 class Ranking extends Component {
   render() {
-    const rankArr = readingRank();
-    rankArr.sort((a, b) => b.score - a.score);
+    const rankArr = readingRank().sort((a, b) => b.score - a.score);
+    const { dispatch } = this.props;
     return (
       <div data-testid="ranking-title">
         <table>
@@ -33,15 +35,21 @@ class Ranking extends Component {
           </tbody>
         </table>
         <Link to="/">
-          <button data-testid="btn-go-home" type="button">Home</button>
+          <button
+            data-testid="btn-go-home"
+            type="button"
+            onClick={ () => dispatch(resetReduxAction()) }
+          >
+            Home
+          </button>
         </Link>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  ...state.player,
-});
+Ranking.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
-export default connect(mapStateToProps)(Ranking);
+export default connect()(Ranking);

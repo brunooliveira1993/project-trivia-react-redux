@@ -8,6 +8,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const API_REQUEST = 'API_REQUEST';
 export const API_FAIL = 'API_FAIL';
 export const CORRECT_ANSWER = 'CORRECT_ANSWER';
+export const RESET_REDUX = 'RESET_REDUX';
 
 export const sendEmailInfo = (payload) => ({
   type: USER_LOGIN,
@@ -17,6 +18,10 @@ export const sendEmailInfo = (payload) => ({
 export const correctAnswerAction = (score) => ({
   type: CORRECT_ANSWER,
   score,
+});
+
+export const resetReduxAction = () => ({
+  type: RESET_REDUX,
 });
 
 // const receiveApiFail = (erro) => ({
