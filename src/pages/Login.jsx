@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { sendEmailInfo, getTriviaApi } from '../store/actions';
+import { sendEmailInfo } from '../store/actions';
+import { getTriviaApi } from '../services/fetchAPI';
 
 class Login extends Component {
   state = {

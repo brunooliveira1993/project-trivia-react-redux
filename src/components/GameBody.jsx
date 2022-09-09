@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { correctAnswerAction } from '../store/actions';
+import { getQuestionsAPI } from '../services/fetchAPI';
 
 const ERROR_TOKEN_RESPONSE = 3;
 const FULL_TIMER = 30;
@@ -25,9 +26,7 @@ class GameBody extends Component {
     }, async () => {
       const { token } = this.state;
       const { history } = this.props;
-      const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
-      const response = await fetch(url);
-      const data = await response.json();
+      const data = await getQuestionsAPI(token);
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
         localStorage.clear();
         history.push('/');
