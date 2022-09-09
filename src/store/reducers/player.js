@@ -1,4 +1,4 @@
-import { USER_LOGIN, API_FAIL, API_REQUEST } from '../actions';
+import { USER_LOGIN, API_FAIL, API_REQUEST, CORRECT_ANSWER } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -20,6 +20,10 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   };
   case API_FAIL: return {
     ...state,
+  };
+  case CORRECT_ANSWER: return {
+    ...state,
+    score: state.score + 1,
   };
   default:
     return state;

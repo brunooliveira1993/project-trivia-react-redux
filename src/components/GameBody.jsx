@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { correctAnswerAction } from '../store/actions';
 
 const ERROR_TOKEN_RESPONSE = 3;
+const FULL_TIMER = 30;
+const ONE_SECOND = 1000;
 
 class GameBody extends Component {
   state = {
@@ -12,6 +15,8 @@ class GameBody extends Component {
     correct: '',
     wrong: '',
     isAnswered: false,
+    timer: FULL_TIMER,
+    shuffled: [],
   };
 
   componentDidMount() {
@@ -20,7 +25,6 @@ class GameBody extends Component {
     }, async () => {
       const { token } = this.state;
       const { history } = this.props;
-      // const token = '5bae1b29a8b8ca437fc1871b3d9862a15ce408c3d547cd95354d9a66fcc6ce22';
       const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -31,7 +35,22 @@ class GameBody extends Component {
       this.setState({
         questions: data,
       });
+      this.randomizeAnswers();
     });
+    this.intervalID = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
+      }));
+    }, ONE_SECOND);
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.state;
+    if (timer === 0) clearInterval(this.intervalID);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   randomArrayShuffle = (array) => {
@@ -48,24 +67,39 @@ class GameBody extends Component {
     return arr;
   };
 
-  onAnswerClick = () => {
+  randomizeAnswers = () => {
+    const { questions, questionNumber } = this.state;
+    const { results } = questions;
+    const current = results ? results[questionNumber] : null;
+    let answers = [];
+    if (results) {
+      answers = [current.correct_answer, ...current.incorrect_answers];
+      this.setState({
+        shuffled: this.randomArrayShuffle(answers),
+      });
+    }
+  };
+
+  onAnswerClick = (answer) => {
+    const { dispatch } = this.props;
+    const { questions: { results }, questionNumber } = this.state;
+    const current = results ? results[questionNumber] : null;
     this.setState({
       isAnswered: true,
       correct: 'correct-answer',
       wrong: 'wrong-answer',
     });
+    if (current.correct_answer === answer) dispatch(correctAnswerAction());
+    clearInterval(this.intervalID);
   };
 
   render() {
-    const { questions, questionNumber, isAnswered, correct, wrong } = this.state;
+    const { questions, questionNumber,
+      isAnswered, correct, wrong, timer, shuffled } = this.state;
+
     const { results } = questions;
     const current = results ? results[questionNumber] : null;
-    let answers = [];
-    let shuffled = [];
-    if (results) {
-      answers = [current.correct_answer, ...current.incorrect_answers];
-      shuffled = this.randomArrayShuffle(answers);
-    }
+
     let wrongNum = 0;
 
     return (
@@ -86,6 +120,7 @@ class GameBody extends Component {
                     key={ index }
                     type="button"
                     onClick={ () => this.onAnswerClick(answer) }
+                    disabled={ timer === 0 }
                   >
                     {answer}
                   </button>
@@ -93,8 +128,9 @@ class GameBody extends Component {
               })}
 
             </div>
+            <h2>{timer}</h2>
           </div>
-        ) }
+        )}
       </div>
     );
   }
@@ -104,6 +140,7 @@ GameBody.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(GameBody);
