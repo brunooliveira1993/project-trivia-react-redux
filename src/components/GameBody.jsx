@@ -7,6 +7,7 @@ import { getQuestionsAPI } from '../services/fetchAPI';
 const ERROR_TOKEN_RESPONSE = 3;
 const FULL_TIMER = 30;
 const ONE_SECOND = 1000;
+const LAST_QUESTION_NUMBER = 4;
 
 class GameBody extends Component {
   state = {
@@ -18,6 +19,8 @@ class GameBody extends Component {
     isAnswered: false,
     timer: FULL_TIMER,
     shuffled: [],
+    isNextVisible: false,
+    questionAnswered: false,
   };
 
   componentDidMount() {
@@ -36,11 +39,12 @@ class GameBody extends Component {
       });
       this.randomizeAnswers();
     });
-    this.intervalID = setInterval(() => {
-      this.setState((prevState) => ({
-        timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
-      }));
-    }, ONE_SECOND);
+    this.intervalTimer();
+    // this.intervalID = setInterval(() => {
+    //   this.setState((prevState) => ({
+    //     timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
+    //   }));
+    // }, ONE_SECOND);
   }
 
   componentDidUpdate() {
@@ -51,6 +55,14 @@ class GameBody extends Component {
   componentWillUnmount() {
     clearInterval(this.intervalID);
   }
+
+  intervalTimer = () => {
+    this.intervalID = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
+      }));
+    }, ONE_SECOND);
+  };
 
   randomArrayShuffle = (array) => {
     let temporaryValue = '';
@@ -87,13 +99,36 @@ class GameBody extends Component {
       isAnswered: true,
       correct: 'correct-answer',
       wrong: 'wrong-answer',
+      isNextVisible: true,
+    }, () => {
+      const { questionAnswered } = this.state;
+      if (current.correct_answer === answer && !questionAnswered) {
+        dispatch(correctAnswerAction());
+      }
+      // if (questionNumber === LAST_QUESTION_NUMBER) history.push('/feedback');
+      this.setState({ questionAnswered: true });
+      clearInterval(this.intervalID);
     });
-    if (current.correct_answer === answer) dispatch(correctAnswerAction());
-    clearInterval(this.intervalID);
+  };
+
+  nextQuestion = () => {
+    const { history } = this.props;
+    const { questionNumber } = this.state;
+    if (questionNumber === LAST_QUESTION_NUMBER) history.push('/feedback');
+    this.setState((prevState) => ({
+      questionNumber: prevState.questionNumber + 1,
+      correct: '',
+      wrong: '',
+      questionAnswered: false,
+      timer: FULL_TIMER,
+    }), () => {
+      this.randomizeAnswers();
+      this.intervalTimer();
+    });
   };
 
   render() {
-    const { questions, questionNumber,
+    const { questions, questionNumber, isNextVisible,
       isAnswered, correct, wrong, timer, shuffled } = this.state;
 
     const { results } = questions;
@@ -128,6 +163,14 @@ class GameBody extends Component {
 
             </div>
             <h2>{timer}</h2>
+            { isNextVisible && (
+              <button
+                data-testid="btn-next"
+                type="button"
+                onClick={ this.nextQuestion }
+              >
+                Next
+              </button>)}
           </div>
         )}
       </div>
