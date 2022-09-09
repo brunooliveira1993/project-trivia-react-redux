@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { correctAnswerAction } from '../store/actions';
 import { getQuestionsAPI } from '../services/fetchAPI';
+import { saveToLocalStorage } from '../services/helpers';
 
 const ERROR_TOKEN_RESPONSE = 3;
 const FULL_TIMER = 30;
@@ -118,7 +119,11 @@ class GameBody extends Component {
   nextQuestion = () => {
     const { history } = this.props;
     const { questionNumber } = this.state;
-    if (questionNumber === LAST_QUESTION_NUMBER) history.push('/feedback');
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+      const { player } = this.props;
+      saveToLocalStorage(player);
+      history.push('/feedback');
+    }
     this.setState((prevState) => ({
       questionNumber: prevState.questionNumber + 1,
       correct: '',
@@ -195,6 +200,11 @@ GameBody.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
+  player: PropTypes.shape().isRequired,
 };
 
-export default connect()(GameBody);
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+export default connect(mapStateToProps)(GameBody);
