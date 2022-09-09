@@ -40,11 +40,6 @@ class GameBody extends Component {
       this.randomizeAnswers();
     });
     this.intervalTimer();
-    // this.intervalID = setInterval(() => {
-    //   this.setState((prevState) => ({
-    //     timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
-    //   }));
-    // }, ONE_SECOND);
   }
 
   componentDidUpdate() {
@@ -105,7 +100,6 @@ class GameBody extends Component {
       if (current.correct_answer === answer && !questionAnswered) {
         dispatch(correctAnswerAction());
       }
-      // if (questionNumber === LAST_QUESTION_NUMBER) history.push('/feedback');
       this.setState({ questionAnswered: true });
       clearInterval(this.intervalID);
     });
