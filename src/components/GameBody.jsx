@@ -37,7 +37,6 @@ class GameBody extends Component {
     }, async () => {
       const { token } = this.state;
       const { history, settings: { settingsSelected } } = this.props;
-      console.log(settingsSelected);
       const data = await getQuestionsAPI(token, settingsSelected);
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
         localStorage.removeItem('token');
