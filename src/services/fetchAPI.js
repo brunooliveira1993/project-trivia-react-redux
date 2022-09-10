@@ -5,9 +5,12 @@ export const getTriviaApi = async () => {
 };
 
 export const getQuestionsAPI = async (token, settings) => {
+  let url = `https://opentdb.com/api.php?amount=5&token=${token}`;
   const cat = settings.categorySelected;
   const dif = settings.difficultySelected;
-  const url = `https://opentdb.com/api.php?amount=5&category=${cat}&difficulty=${dif}&token=${token}`;
+  if (cat !== '' || dif !== '') {
+    url = `https://opentdb.com/api.php?amount=5&category=${cat}&difficulty=${dif}&token=${token}`;
+  }
   const response = await fetch(url);
   const data = await response.json();
   return data;
