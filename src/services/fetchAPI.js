@@ -4,8 +4,17 @@ export const getTriviaApi = async () => {
   return json.token;
 };
 
-export const getQuestionsAPI = async (token) => {
-  const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
+export const getQuestionsAPI = async (token, settings) => {
+  const cat = settings.categorySelected;
+  const dif = settings.difficultySelected;
+  const url = `https://opentdb.com/api.php?amount=5&category=${cat}&difficulty=${dif}&token=${token}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+};
+
+export const fetchCategoryAPI = async () => {
+  const url = 'https://opentdb.com/api_category.php';
   const response = await fetch(url);
   const data = await response.json();
   return data;

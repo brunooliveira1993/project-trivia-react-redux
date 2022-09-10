@@ -36,8 +36,9 @@ class GameBody extends Component {
       token: localStorage.getItem('token'),
     }, async () => {
       const { token } = this.state;
-      const { history } = this.props;
-      const data = await getQuestionsAPI(token);
+      const { history, settings: { settingsSelected } } = this.props;
+      console.log(settingsSelected);
+      const data = await getQuestionsAPI(token, settingsSelected);
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
         localStorage.removeItem('token');
         history.push('/');
@@ -201,6 +202,7 @@ GameBody.propTypes = {
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
   player: PropTypes.shape().isRequired,
+  settings: PropTypes.shape().isRequired,
 };
 
 const mapStateToProps = (state) => ({
