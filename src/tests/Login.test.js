@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import App from '../App'
@@ -22,8 +22,8 @@ describe('Login page tests', () => {
     expect(settingsBtn).toBeInTheDocument();
   })
 
-  it('validates inputs and tests play button', () => {
-    const { history } = renderWithRouterAndRedux(<App />);
+  it('validates inputs and tests play button', async () => {
+    const { history, store } = renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.getByTestId('input-gravatar-email');
     const nameInput = screen.getByTestId('input-player-name');
@@ -35,6 +35,11 @@ describe('Login page tests', () => {
     expect(loginBtn).not.toBeDisabled();
 
     userEvent.click(loginBtn);
+
+    await waitFor(() => expect(history.location.pathname).toBe('/game'))
+
+    const redux = store.getState()
+    console.log(redux);
     // expect(history.location.pathname).toBe('/game');
   })
   
