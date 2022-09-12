@@ -141,6 +141,12 @@ class GameBody extends Component {
     });
   };
 
+  decodeEntity = (inputStr) => {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = inputStr;
+    return textarea.value;
+  };
+
   render() {
     const { questions, questionNumber, isNextVisible,
       isAnswered, correct, wrong, timer, shuffled, questionDifficulty } = this.state;
@@ -158,7 +164,7 @@ class GameBody extends Component {
           <div>
             <h1>{ questionDifficulty }</h1>
             <h3 data-testid="question-category">{current.category}</h3>
-            <h4 data-testid="question-text">{current.question}</h4>
+            <h4 data-testid="question-text">{this.decodeEntity(current.question)}</h4>
             <div data-testid="answer-options">
               {shuffled.map((answer, index) => {
                 if (answer !== current.correct_answer) wrongNum += 1;
