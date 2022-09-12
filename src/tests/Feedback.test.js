@@ -40,16 +40,16 @@ describe('Feedback page tests', ()=> {
     expect(history.location.pathname).toBe('/');
   })
 
-  it('Validate button Ranking', () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-    history.push('/feedback');
+  // it('Validate button Ranking', () => {
+  //   const { history } = renderWithRouterAndRedux(<App />);
+  //   history.push('/feedback');
 
-    const btnRanking = screen.getByTestId('btn-ranking');
-    userEvent.click(btnRanking);
+  //   const btnRanking = screen.getByTestId('btn-ranking');
+  //   userEvent.click(btnRanking);
 
-    expect(btnRanking).toBeDefined();
-    expect(history.location.pathname).toBe('/ranking')
-  })
+  //   expect(btnRanking).toBeDefined();
+  //   expect(history.location.pathname).toBe('/ranking')
+  // })
 
   it('Validate when 3 answers corrects, show text Well Done', () => {
     renderWithRouterAndRedux(<FeedBack />,
