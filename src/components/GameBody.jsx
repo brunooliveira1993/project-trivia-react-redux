@@ -186,7 +186,7 @@ class GameBody extends Component {
                 type="button"
                 onClick={ this.nextQuestion }
               >
-                Next
+                Next...
               </button>)}
           </div>
         )}
