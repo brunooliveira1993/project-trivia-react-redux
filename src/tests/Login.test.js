@@ -40,7 +40,6 @@ describe('Login page tests', () => {
 
     const redux = store.getState()
     console.log(redux);
-    // expect(history.location.pathname).toBe('/game');
   })
   
   it('tests settings button', () => {
