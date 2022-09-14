@@ -108,6 +108,7 @@ class GameBody extends Component {
     const { questionNumber } = this.state;
     if (questionNumber === LAST_QUESTION_NUMBER) {
       const { player } = this.props;
+      console.log(player);
       saveToLocalStorage(player);
       history.push('/feedback');
     }
