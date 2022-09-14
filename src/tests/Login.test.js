@@ -7,7 +7,7 @@ import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 
 describe('Login page tests', () => {
   it('renders all components', () => {
-    renderWithRouterAndRedux(<Login />);
+    renderWithRouterAndRedux(<App />);
 
     // const logo = screen.getByAltText('logo');
     const emailInput = screen.getByTestId('input-gravatar-email');
@@ -39,7 +39,6 @@ describe('Login page tests', () => {
     await waitFor(() => expect(history.location.pathname).toBe("/game"))
 
     const redux = store.getState()
-    console.log(redux);
   })
   
   it('tests settings button', () => {
