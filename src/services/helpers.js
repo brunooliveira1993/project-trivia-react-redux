@@ -26,9 +26,7 @@ export const filteredPlayer = (playerObj) => {
 };
 
 export const saveToLocalStorage = (playerObj) => {
-  if (!JSON.parse(localStorage.getItem(RANKING))) {
-    localStorage.setItem(RANKING, JSON.stringify([]));
-  }
+  localStorage.setItem(RANKING, JSON.stringify([]));
 
   const player = filteredPlayer(playerObj);
 
@@ -36,16 +34,21 @@ export const saveToLocalStorage = (playerObj) => {
   savePlayer([...rank, player]);
 };
 
-export const randomArrayShuffle = (array) => {
-  let temporaryValue = '';
-  let randomIndex = 0;
-  const arr = [];
-  while (array.length > arr.length) {
-    randomIndex = Math.floor(Math.random() * array.length);
-    temporaryValue = array[randomIndex];
-    if (!arr.includes(temporaryValue)) {
-      arr.push(temporaryValue);
-    }
-  }
-  return arr;
-};
+const halfPossibilities = 0.5;
+
+export const randomArrayShuffle = (array) => array
+  .sort(() => Math.random() - halfPossibilities);
+
+// export const randomArrayShuffle = (array) => {
+//   let temporaryValue = '';
+//   let randomIndex = 0;
+//   const arr = [];
+//   while (array.length > arr.length) {
+//     randomIndex = Math.floor(Math.random() * array.length);
+//     temporaryValue = array[randomIndex];
+//     if (!arr.includes(temporaryValue)) {
+//       arr.push(temporaryValue);
+//     }
+//   }
+//   return arr;
+// };
