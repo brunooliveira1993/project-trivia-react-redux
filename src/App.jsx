@@ -1,9 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-// import logo from './trivia.png';
+import './App.css';
 import Login from './pages/Login';
 import Game from './pages/Game';
-import './App.css';
 import Settings from './pages/Settings';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';

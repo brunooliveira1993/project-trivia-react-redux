@@ -2,8 +2,9 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import App from '../App'
-import Login from "../pages/Login";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
+import firstQuestionMock from "./helpers/firstQuestionMock";
+
 
 const token = '4582831fa651c14bdb5b2ac3d915e439b7482fdc80731353aa2f213070a1978a';
 
@@ -25,7 +26,12 @@ describe('Login page tests', () => {
   })
 
   it('validates inputs and tests play button', async () => {
-    const { history, store } = renderWithRouterAndRedux(<App />);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(firstQuestionMock),
+    });
+
+    renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.getByTestId('input-gravatar-email');
     const nameInput = screen.getByTestId('input-player-name');
@@ -38,9 +44,7 @@ describe('Login page tests', () => {
 
     userEvent.click(loginBtn);
 
-    await waitFor(() => expect(history.location.pathname).toBe("/game"))
-
-    const redux = store.getState()
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1))
   })
   
   it('tests settings button', () => {
@@ -49,5 +53,19 @@ describe('Login page tests', () => {
     const settingsBtn = screen.getByTestId('btn-settings');
     userEvent.click(settingsBtn);
     expect(history.location.pathname).toBe('/settings');
+  })
+
+  it('tests if Game is rendered', () => {
+    const initialState = {
+      player: {
+        name: 'Braddock',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: 'trybe@trybe.com'
+      }
+    }
+    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game');
+
+    expect(history.location.pathname).toBe('/game');
   })
 })
