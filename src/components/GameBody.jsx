@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { correctAnswerAction } from '../store/actions';
 import { getQuestionsAPI } from '../services/fetchAPI';
-import { saveToLocalStorage } from '../services/helpers';
+import { saveToLocalStorage, randomArrayShuffle } from '../services/helpers';
 
 const ERROR_TOKEN_RESPONSE = 3;
 const FULL_TIMER = 30;
@@ -68,42 +68,25 @@ class GameBody extends Component {
   intervalTimer = () => {
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({
-        timer: prevState.timer > 0 ? prevState.timer - 1 : 0,
+        timer: prevState.timer - 1,
       }));
     }, ONE_SECOND);
-  };
-
-  randomArrayShuffle = (array) => {
-    let temporaryValue = '';
-    let randomIndex = 0;
-    const arr = [];
-    while (array.length > arr.length) {
-      randomIndex = Math.floor(Math.random() * array.length);
-      temporaryValue = array[randomIndex];
-      if (!arr.includes(temporaryValue)) {
-        arr.push(temporaryValue);
-      }
-    }
-    return arr;
   };
 
   randomizeAnswers = () => {
     const { questions, questionNumber } = this.state;
     const { results } = questions;
-    const current = results && results[questionNumber];
-    let answers = [];
-    if (results) {
-      answers = [current.correct_answer, ...current.incorrect_answers];
-      this.setState({
-        shuffled: this.randomArrayShuffle(answers),
-      });
-    }
+    const current = results[questionNumber];
+    const answers = [current.correct_answer, ...current.incorrect_answers];
+    this.setState({
+      shuffled: randomArrayShuffle(answers),
+    });
   };
 
   onAnswerClick = (answer) => {
     const { dispatch } = this.props;
     const { questions: { results }, questionNumber } = this.state;
-    const current = results ? results[questionNumber] : null;
+    const current = results[questionNumber];
     this.setState({
       isAnswered: true,
       correct: 'correct-answer',
