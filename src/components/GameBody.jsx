@@ -22,7 +22,7 @@ class GameBody extends Component {
     questions: {},
     questionNumber: 0,
     questionDifficulty: '',
-    correct: '',
+    right: '',
     wrong: '',
     isAnswered: false,
     timer: FULL_TIMER,
@@ -89,7 +89,7 @@ class GameBody extends Component {
     const current = results[questionNumber];
     this.setState({
       isAnswered: true,
-      correct: 'correct-answer',
+      right: 'right-answer',
       wrong: 'wrong-answer',
       isNextVisible: true,
     }, () => {
@@ -113,7 +113,7 @@ class GameBody extends Component {
     }
     this.setState((prevState) => ({
       questionNumber: prevState.questionNumber + 1,
-      correct: '',
+      right: '',
       wrong: '',
       questionAnswered: false,
       timer: FULL_TIMER,
@@ -130,11 +130,10 @@ class GameBody extends Component {
 
   render() {
     const { questions, questionNumber, isNextVisible,
-      isAnswered, correct, wrong, timer, shuffled, questionDifficulty } = this.state;
+      isAnswered, right, wrong, timer, shuffled, questionDifficulty } = this.state;
 
     const { results } = questions;
     const current = results && results[questionNumber];
-    console.log(current);
 
     let wrongNum = 0;
 
@@ -153,7 +152,7 @@ class GameBody extends Component {
                 return (
                   <button
                     className={ isAnswered && answer === current.correct_answer
-                      ? correct : wrong }
+                      ? right : wrong }
                     data-testid={ answer === current.correct_answer
                       ? 'correct-answer' : `wrong-answer-${wrongNum - 1}` }
                     key={ index }

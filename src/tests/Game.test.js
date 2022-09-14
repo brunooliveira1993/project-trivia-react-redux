@@ -56,7 +56,7 @@ describe('', () => {
 
     userEvent.click(correctAnswer)
 
-    expect(correctAnswer).toHaveClass('correct-answer');
+    expect(correctAnswer).toHaveClass('right-answer');
 
     wrongAnswers.forEach((wrong) => {
       expect(wrong).toHaveClass('wrong-answer')
@@ -101,7 +101,7 @@ describe('', () => {
     expect(nextBtn).not.toBeInTheDocument();
 
     const newCorrectAnswer = screen.getByTestId('correct-answer');
-    expect(newCorrectAnswer).not.toHaveClass('correct-answer');
+    expect(newCorrectAnswer).not.toHaveClass('right-answer');
 
     const wrongAnswers = screen.getAllByTestId(/wrong-answer-/i)
 
@@ -129,7 +129,7 @@ describe('', () => {
 
     const correctAnswer1 = screen.getByTestId('correct-answer');
     userEvent.click(correctAnswer1);
-    expect(correctAnswer1).toHaveClass('correct-answer')
+    expect(correctAnswer1).toHaveClass('right-answer')
     const score = screen.getByTestId('header-score');
     expect(score).toHaveTextContent('37');
     expect(screen.getByText('27')).toBeInTheDocument()
