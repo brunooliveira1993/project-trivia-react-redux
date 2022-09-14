@@ -2,6 +2,10 @@ import md5 from 'crypto-js/md5';
 
 const RANKING = 'ranking';
 
+if (!JSON.parse(localStorage.getItem(RANKING))) {
+  localStorage.setItem(RANKING, JSON.stringify([]));
+}
+
 export const readingRank = () => JSON.parse(localStorage.getItem(RANKING));
 
 export const savePlayer = (player) => localStorage
