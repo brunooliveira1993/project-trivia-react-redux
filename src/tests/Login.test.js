@@ -36,7 +36,7 @@ describe('Login page tests', () => {
 
     userEvent.click(loginBtn);
 
-    await waitFor(() => expect(history.location.pathname).toBe('/game'))
+    await waitFor(() => expect(history.location.pathname).toBe("/game"))
 
     const redux = store.getState()
     console.log(redux);
