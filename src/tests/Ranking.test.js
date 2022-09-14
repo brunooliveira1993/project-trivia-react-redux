@@ -44,7 +44,7 @@ describe('Test ranking page', () => {
         const { history } = renderWithRouterAndRedux(<App/>);
         history.push('/ranking');
         
-        const picHeader = screen.getByRole('columnheader',{name:'.'});
+        const picHeader = screen.getByRole('columnheader',{name:/profile picture/i});
         expect(picHeader).toBeInTheDocument();
         const nameHeader = screen.getByRole('columnheader',{name:/nome/i})
         expect(nameHeader).toBeInTheDocument();

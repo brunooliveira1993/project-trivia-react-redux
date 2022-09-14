@@ -5,9 +5,18 @@ import App from "../App";
 import FeedBack from "../pages/Feedback";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 
+const initialState = {
+  player: {
+    name: '',
+    assertions: 5,
+    score: 0,
+    gravatarEmail: ''
+  }
+};
+
 describe('Feedback page tests', ()=> {
   it('Verify if render all components', () => {
-    renderWithRouterAndRedux(<FeedBack />);
+    renderWithRouterAndRedux(<App />, initialState, '/feedback')
 
     const imgGravatar = screen.getByTestId('header-profile-picture');
     const playerName = screen.getByTestId('header-player-name');
@@ -52,13 +61,7 @@ describe('Feedback page tests', ()=> {
   })
 
   it('Validate when 3 answers corrects, show text Well Done', () => {
-    renderWithRouterAndRedux(<FeedBack />,
-    {
-        player: {
-          score: 4,
-        }
-    }
-    );
+    renderWithRouterAndRedux(<App />, initialState, '/feedback')
 
     const wellDoneText = screen.getByText(/well done/i);
 
