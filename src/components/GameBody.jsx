@@ -32,6 +32,19 @@ class GameBody extends Component {
   };
 
   componentDidMount() {
+    this.validateToken();
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.state;
+    if (!timer) clearInterval(this.intervalID);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  validateToken = () => {
     this.setState({
       token: localStorage.getItem('token'),
     }, async () => {
@@ -50,16 +63,7 @@ class GameBody extends Component {
       this.randomizeAnswers();
     });
     this.intervalTimer();
-  }
-
-  componentDidUpdate() {
-    const { timer } = this.state;
-    if (timer === 0) clearInterval(this.intervalID);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
-  }
+  };
 
   intervalTimer = () => {
     this.intervalID = setInterval(() => {
@@ -86,7 +90,7 @@ class GameBody extends Component {
   randomizeAnswers = () => {
     const { questions, questionNumber } = this.state;
     const { results } = questions;
-    const current = results ? results[questionNumber] : null;
+    const current = results && results[questionNumber];
     let answers = [];
     if (results) {
       answers = [current.correct_answer, ...current.incorrect_answers];
@@ -146,7 +150,8 @@ class GameBody extends Component {
       isAnswered, correct, wrong, timer, shuffled, questionDifficulty } = this.state;
 
     const { results } = questions;
-    const current = results ? results[questionNumber] : null;
+    const current = results && results[questionNumber];
+    console.log(current);
 
     let wrongNum = 0;
 

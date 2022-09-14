@@ -14,7 +14,7 @@ class Ranking extends Component {
         <table>
           <thead className="table-head">
             <tr>
-              <th>.</th>
+              <th>Profile Picture</th>
               <th>Nome</th>
               <th>Score</th>
             </tr>
