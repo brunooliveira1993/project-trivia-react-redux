@@ -5,6 +5,8 @@ import App from '../App'
 import Login from "../pages/Login";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 
+const token = '4582831fa651c14bdb5b2ac3d915e439b7482fdc80731353aa2f213070a1978a';
+
 describe('Login page tests', () => {
   it('renders all components', () => {
     renderWithRouterAndRedux(<App />);
