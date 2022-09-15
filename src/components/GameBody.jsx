@@ -37,7 +37,7 @@ class GameBody extends Component {
 
   componentDidUpdate() {
     const { timer } = this.state;
-    if (!timer) clearInterval(this.intervalID);
+    if (timer === 0) clearInterval(this.intervalID);
   }
 
   componentWillUnmount() {
