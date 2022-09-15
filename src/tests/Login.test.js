@@ -34,7 +34,7 @@ describe('Login page tests', () => {
       json: jest.fn().mockResolvedValue(mockQuestions).mockResolvedValueOnce(mockTokenResponse),
     });
 
-    const { history, store } = renderWithRouterAndRedux(<App />);
+    const { history } = renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.getByTestId('input-gravatar-email');
     const nameInput = screen.getByTestId('input-player-name');
@@ -50,8 +50,6 @@ describe('Login page tests', () => {
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
 
     expect(history.location.pathname).toBe("/game");
-
-    const redux = store.getState();
   })
   
   it('tests settings button', () => {
