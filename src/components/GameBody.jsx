@@ -49,8 +49,8 @@ class GameBody extends Component {
       token: localStorage.getItem('token'),
     }, async () => {
       const { token } = this.state;
-      const { history } = this.props;
-      const data = await getQuestionsAPI(token);
+      const { history, settings: { settingsSelected } } = this.props;
+      const data = await getQuestionsAPI(token, settingsSelected);
       if (data.response_code === ERROR_TOKEN_RESPONSE) {
         localStorage.removeItem('token');
         history.push('/');
@@ -129,6 +129,12 @@ class GameBody extends Component {
     });
   };
 
+  decodeEntity = (inputStr) => {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = inputStr;
+    return textarea.value;
+  };
+
   render() {
     const { questions, questionNumber, isNextVisible,
       isAnswered, right, wrong, timer, shuffled, questionDifficulty } = this.state;
@@ -146,7 +152,7 @@ class GameBody extends Component {
           <div>
             <h1>{ questionDifficulty }</h1>
             <h3 data-testid="question-category">{current.category}</h3>
-            <h4 data-testid="question-text">{current.question}</h4>
+            <h4 data-testid="question-text">{this.decodeEntity(current.question)}</h4>
             <div data-testid="answer-options">
               {shuffled.map((answer, index) => {
                 if (answer !== current.correct_answer) wrongNum += 1;
@@ -189,6 +195,7 @@ GameBody.propTypes = {
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
   player: PropTypes.shape().isRequired,
+  settings: PropTypes.shape().isRequired,
 };
 
 const mapStateToProps = (state) => ({
