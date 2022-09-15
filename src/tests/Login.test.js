@@ -2,11 +2,14 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import App from '../App'
+import mockQuestions from "./helpers/mockQuestions";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
-import firstQuestionMock from "./helpers/firstQuestionMock";
 
-
-const token = '4582831fa651c14bdb5b2ac3d915e439b7482fdc80731353aa2f213070a1978a';
+const mockTokenResponse = {
+  "response_code": 0,
+  "response_message": "Token Generated Successfully!",
+  "token": "59f6d24cb72b5785960e88ede62a65f89fd9d1ed52a63042cf500195af03f990"
+  }
 
 describe('Login page tests', () => {
   it('renders all components', () => {
@@ -28,10 +31,10 @@ describe('Login page tests', () => {
   it('validates inputs and tests play button', async () => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(firstQuestionMock),
+      json: jest.fn().mockResolvedValue(mockQuestions).mockResolvedValueOnce(mockTokenResponse),
     });
 
-    renderWithRouterAndRedux(<App />);
+    const { history, store } = renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.getByTestId('input-gravatar-email');
     const nameInput = screen.getByTestId('input-player-name');
@@ -44,7 +47,9 @@ describe('Login page tests', () => {
 
     userEvent.click(loginBtn);
 
-    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
+
+    expect(history.location.pathname).toBe("/game");
   })
   
   it('tests settings button', () => {
