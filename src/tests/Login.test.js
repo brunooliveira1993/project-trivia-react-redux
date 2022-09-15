@@ -34,7 +34,7 @@ describe('Login page tests', () => {
       json: jest.fn().mockResolvedValue(mockQuestions).mockResolvedValueOnce(mockTokenResponse),
     });
 
-    const { history, store } = renderWithRouterAndRedux(<App />);
+    const { history } = renderWithRouterAndRedux(<App />);
 
     const emailInput = screen.getByTestId('input-gravatar-email');
     const nameInput = screen.getByTestId('input-player-name');
@@ -58,19 +58,5 @@ describe('Login page tests', () => {
     const settingsBtn = screen.getByTestId('btn-settings');
     userEvent.click(settingsBtn);
     expect(history.location.pathname).toBe('/settings');
-  })
-
-  it('tests if Game is rendered', () => {
-    const initialState = {
-      player: {
-        name: 'Braddock',
-        assertions: 0,
-        score: 0,
-        gravatarEmail: 'trybe@trybe.com'
-      }
-    }
-    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game');
-
-    expect(history.location.pathname).toBe('/game');
   })
 })
