@@ -26,7 +26,9 @@ export const filteredPlayer = (playerObj) => {
 };
 
 export const saveToLocalStorage = (playerObj) => {
-  localStorage.setItem(RANKING, JSON.stringify([]));
+  if (!JSON.parse(localStorage.getItem(RANKING))) {
+    localStorage.setItem(RANKING, JSON.stringify([]));
+  }
 
   const player = filteredPlayer(playerObj);
 

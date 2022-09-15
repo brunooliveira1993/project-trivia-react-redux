@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+import { getGravatarImg } from '../services/helpers';
 
 class Header extends Component {
   state = {
@@ -10,9 +10,8 @@ class Header extends Component {
 
   componentDidMount() {
     const { email } = this.props;
-    const hash = md5(email).toString();
     this.setState({
-      gravatarImgUrl: `https://www.gravatar.com/avatar/${hash}`,
+      gravatarImgUrl: getGravatarImg(email),
     });
   }
 
